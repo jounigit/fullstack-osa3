@@ -55,6 +55,27 @@ let persons = [
     }
   })
 
+  const randomId = () => {
+    const id = Math.floor(Math.random() * Math.floor(100))
+    return id
+  }
+
+  app.post('/persons', (request, response) => {
+    const body = request.body
+
+    const person = {
+      name: body.name,
+      number: body.number,
+      id: randomId()
+    }
+
+    persons = persons.concat(person)
+
+    console.log(person)
+
+    response.json(person)
+})
+
   app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
     persons = persons.filter(person => person.id !== id)
