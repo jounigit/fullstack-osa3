@@ -24,14 +24,15 @@ let persons = [
     }
   ]
 
-  app.get('/api', (req, res) => {
+  app.get('/', (req, res) => {
     res.send('<h1>Hello World!</h1>')
   })
 
-  app.get('/api/persons', (req, res) => {
+  app.get('/persons', (req, res) => {
     res.json(persons)
   })
 
-const port = 3001
-app.listen(port)
-console.log(`Server running on port ${port}`)
+  const PORT = process.env.PORT || 3001
+  app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`)
+  })
