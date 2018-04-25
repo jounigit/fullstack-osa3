@@ -68,7 +68,7 @@ let persons = [
 
     //body.name = "Peku Poku"
     //body.name = "Lea Kutvonen"
-    body.number = "11-2234"
+    //body.number = "11-2234"
 
     const name = persons.find(person => person.name === body.name)
 
