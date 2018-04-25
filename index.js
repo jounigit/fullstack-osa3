@@ -1,5 +1,8 @@
 const express = require('express')
 const app = express()
+const bodyParser = require('body-parser')
+
+app.use(bodyParser.json())
 
 let persons = [
     {
@@ -60,8 +63,22 @@ let persons = [
     return id
   }
 
-  app.post('/persons', (request, response) => {
+  app.post('/api/persons', (request, response) => {
     const body = request.body
+
+    //body.name = "Peku Poku"
+    //body.name = "Lea Kutvonen"
+    body.number = "11-2234"
+
+    const name = persons.find(person => person.name === body.name)
+
+      if (body.name === undefined || body.number === undefined) {
+        return response.status(400).json({error: 'nimi tai numero puuttuu'})
+      }
+
+      if (name) {
+        return response.status(400).json({error: 'lisättävä nimi on jo luettelossa'})
+      }
 
     const person = {
       name: body.name,
@@ -72,9 +89,8 @@ let persons = [
     persons = persons.concat(person)
 
     console.log(person)
-
     response.json(person)
-})
+  })
 
   app.delete('/api/persons/:id', (request, response) => {
     const id = Number(request.params.id)
