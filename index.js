@@ -28,7 +28,7 @@ let persons = [
     res.send('<h1>Hello World!</h1>')
   })
 
-  app.get('/persons', (req, res) => {
+  app.get('/api/persons', (req, res) => {
     res.json(persons)
   })
 
