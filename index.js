@@ -28,6 +28,18 @@ let persons = [
     res.send('<h1>Hello World!</h1>')
   })
 
+  app.get('/info', (req, res) => {
+    const d = new Date()
+    const n = d.toString()
+    const ulos = '<p>puhelinluettelossa ' + persons.length + ' henkilön tiedot</p><p>' + n + '</p>'
+
+    if ( ulos ) {
+    res.send(ulos)
+    } else {
+      response.status(404).end()
+    }
+  })
+
   app.get('/api/persons', (req, res) => {
     res.json(persons)
   })
