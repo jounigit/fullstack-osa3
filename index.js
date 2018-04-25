@@ -24,11 +24,11 @@ let persons = [
     }
   ]
 
-  app.get('/', (req, res) => {
+  app.get('/api', (req, res) => {
     res.send('<h1>Hello World!</h1>')
   })
 
-  app.get('/persons', (req, res) => {
+  app.get('/api/persons', (req, res) => {
     res.json(persons)
   })
 
