@@ -14,8 +14,6 @@ morgan.token('body', function getBody (req) {
 })
 app.use(morgan(':method :url :body :status :res[content-length] - :response-time ms'))
 
-
-
   app.get('/', (req, res) => {
     res.send('<h1>Hello World!</h1>')
   })
