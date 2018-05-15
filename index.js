@@ -62,26 +62,21 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
     //body.name = "Lea Kutvonen"
     //body.number = "11-2234"
 
-    const name = persons.find(person => person.name === body.name)
-
       if (body.name === undefined || body.number === undefined) {
         return response.status(400).json({error: 'nimi tai numero puuttuu'})
       }
 
-      if (name) {
-        return response.status(400).json({error: 'lisättävä nimi on jo luettelossa'})
-      }
-
-    const person = {
+    const person = new Person({
       name: body.name,
-      number: body.number,
-      id: randomId()
-    }
+      number: body.number
+    })
 
-    persons = persons.concat(person)
+    person
+      .save()
+      .then(savedPerson => {
+        response.json(savedPerson)
+      })
 
-    console.log(person)
-    response.json(person)
   })
 
   app.delete('/api/persons/:id', (request, response) => {
