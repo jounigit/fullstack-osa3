@@ -14,6 +14,7 @@ morgan.token('body', function getBody (req) {
 })
 app.use(morgan(':method :url :body :status :res[content-length] - :response-time ms'))
 
+
   app.get('/', (req, res) => {
     res.send('<h1>Hello World!</h1>')
   })
@@ -31,12 +32,12 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
   })
 
   app.get('/api/persons', (request, response) => {
-    Person
-      .find({})
-      .then(people => {
-        response.json(people)
-      })
-  })
+      Person
+        .find({})
+        .then(people => {
+          response.json(people)
+        })
+    })
 
   app.get('/api/persons/:id', (req, response) => {
     const id = Number(req.params.id)
