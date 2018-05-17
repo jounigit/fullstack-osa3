@@ -36,7 +36,7 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
         .find({})
         .then(persons => {
           persons.map(Person.format)
-        }) /* */
+        }) /*  */
     })
 
   app.get('/api/persons/:id', (req, response) => {

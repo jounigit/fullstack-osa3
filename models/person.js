@@ -16,9 +16,18 @@ const personSchema = new mongoose.Schema({
 })
 
 personSchema.static.format = function(person) {
-  return this.find( {_id: person._id}, function(err, person) {
-    console.log(person)
-  } )
+/*  return this.findById(person._id)
+          .then(person => {
+            return {
+              name: person.name
+            }
+          })
+ */
+  return this.find( {_id: person._id}, (person) => {
+            return {
+              name: person.name
+            }
+        } )
 
 }
 
