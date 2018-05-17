@@ -34,9 +34,9 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
   app.get('/api/persons', (request, response) => {
       Person
         .find({})
-        .then(people => {
-          response.json(people)
-        })
+        .then(persons => {
+          persons.map(Person.format)
+        }) /* */
     })
 
   app.get('/api/persons/:id', (req, response) => {
@@ -50,10 +50,6 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
     }
   })
 
-  const randomId = () => {
-    const id = Math.floor(Math.random() * Math.floor(100))
-    return id
-  }
 
   app.post('/api/persons', (request, response) => {
     const body = request.body
