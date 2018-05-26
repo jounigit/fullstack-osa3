@@ -39,21 +39,40 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
         })
     })
 
-  app.get('/api/persons/:id', (req, response) => {
-    const id = Number(req.params.id)
-    const person = persons.find(person => person.id === id)
-
-    if ( person ) {
-      response.json(person)
-    } else {
-      response.status(404).end()
-    }
+  app.get('/api/persons/:id', (request, response) => {
+    Person
+    .findById(request.params.id)
+    .then(person => {
+      if (person) {
+        response.json(person)
+      } else {
+        response.status(404).end()
+      }
+    })
+    .catch(error => {
+      console.log(error)
+      response.status(400).send({ error: 'malformatted id' })
+    })
   })
 
-  const randomId = () => {
-    const id = Math.floor(Math.random() * Math.floor(100))
-    return id
-  }
+  app.put('/api/persons/:id', (request, response) => {
+    const body = request.body
+
+    const person = {
+      name: body.name,
+      number: body.number
+    }
+
+    Note
+      .findByIdAndUpdate(request.params.id, person, { new: true } )
+      .then(updatedPerson => {
+        response.json(formatNote(updatedPerson))
+      })
+      .catch(error => {
+        console.log(error)
+        response.status(400).send({ error: 'malformatted id' })
+      })
+  })
 
   app.post('/api/persons', (request, response) => {
     const body = request.body
