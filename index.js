@@ -76,7 +76,10 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
       .then(savedPerson => {
         response.json(savedPerson)
       })
-
+      .catch(error => {
+      console.log(error)
+      //
+    })
   })
 
   app.delete('/api/persons/:id', (request, response) => {
