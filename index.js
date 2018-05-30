@@ -50,11 +50,6 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
     }
   })
 
-  const randomId = () => {
-    const id = Math.floor(Math.random() * Math.floor(100))
-    return id
-  }
-
   app.post('/api/persons', (request, response) => {
     const body = request.body
 
