@@ -36,18 +36,19 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
         .find({})
         .then(persons => {
           persons.map(Person.format)
+          //response.json(persons.map(Person.format))
         }) /*  */
     })
 
-  app.get('/api/persons/:id', (req, response) => {
-    const id = Number(req.params.id)
-    const person = persons.find(person => person.id === id)
-
-    if ( person ) {
-      response.json(person)
-    } else {
-      response.status(404).end()
-    }
+  app.get('/api/persons/:id', (request, response) => {
+    Person
+      .findById(request.params.id)
+      .then(person => {
+         console.log('index.js: ' + person)
+        //Person.format(person)
+        response.json(Person.format(person))
+        //response.json(person)
+      })
   })
 
 
