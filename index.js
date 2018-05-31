@@ -35,8 +35,8 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
       Person
         .find({})
         .then(persons => {
-          persons.map(Person.format)
-          //response.json(persons.map(Person.format))
+        //  persons.map(Person.format)
+          response.json(persons.map(Person.format))
         }) /*  */
     })
 
@@ -45,9 +45,7 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
       .findById(request.params.id)
       .then(person => {
          console.log('index.js: ' + person)
-        //Person.format(person)
         response.json(Person.format(person))
-        //response.json(person)
       })
   })
 

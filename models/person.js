@@ -16,29 +16,12 @@ const personSchema = new mongoose.Schema({
 })
 
 personSchema.statics.format = function(person) {
-  //return   console.log(person.name)
-//  return Person.find( {_id: person._id})
-   Person.find( {_id: person._id}, function(err, person) {
-                console.log(person)
-                return {
-                  name: person[0][0]
-                }
-            } )
-/**/
- /*return Person.find( {_id: person._id})
-        .then(person =>{
-           console.log(person)
-            return   person.name
-        })
- */
-/* Person.find( {_id: person._id}, function(err, person) {
-             console.log(person)
-             return person[0]
-         } )
-  return this.find( {_id: person._id}, function(err, person) {
-            console.log(person.name)
-        } ) */
-
+  //return   console.log(person)
+  return {
+    name: person.name,
+    number: person.number,
+    id: person._id
+  }
 }
 
 const Person = mongoose.model('Person', personSchema)
