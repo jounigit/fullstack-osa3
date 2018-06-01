@@ -32,54 +32,27 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
   })
 
   app.get('/api/persons', (request, response) => {
-      Person
-        .find({})
-        .then(people => {
-          response.json(people)
-        })
-    })
-
-  app.get('/api/persons/:id', (request, response) => {
     Person
-    .findById(request.params.id)
-    .then(person => {
-      if (person) {
-        response.json(person)
-      } else {
-        response.status(404).end()
-      }
+      .find({})
+      .then(people => {
+      //  persons.map(Person.format)
+        response.json(people.map(Person.format))
+      }) /*  */
     })
-    .catch(error => {
-      console.log(error)
-      response.status(400).send({ error: 'malformatted id' })
-    })
-  })
 
-  app.put('/api/persons/:id', (request, response) => {
-    const body = request.body
+  app.get('/api/persons/:id', (req, response) => {
+    const id = Number(req.params.id)
+    const person = persons.find(person => person.id === id)
 
-    const person = {
-      name: body.name,
-      number: body.number
+    if ( person ) {
+      response.json(person)
+    } else {
+      response.status(404).end()
     }
-
-    Note
-      .findByIdAndUpdate(request.params.id, person, { new: true } )
-      .then(updatedPerson => {
-        response.json(formatNote(updatedPerson))
-      })
-      .catch(error => {
-        console.log(error)
-        response.status(400).send({ error: 'malformatted id' })
-      })
   })
 
   app.post('/api/persons', (request, response) => {
     const body = request.body
-
-    //body.name = "Peku Poku"
-    //body.name = "Lea Kutvonen"
-    //body.number = "11-2234"
 
       if (body.name === undefined || body.number === undefined) {
         return response.status(400).json({error: 'nimi tai numero puuttuu'})
@@ -95,7 +68,10 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
       .then(savedPerson => {
         response.json(savedPerson)
       })
-
+      .catch(error => {
+      console.log(error)
+      //
+    })
   })
 
   app.delete('/api/persons/:id', (request, response) => {
