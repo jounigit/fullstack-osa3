@@ -32,11 +32,12 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
   })
 
   app.get('/api/persons', (request, response) => {
-      Person
-        .find({})
-        .then(people => {
-          response.json(people)
-        })
+    Person
+      .find({})
+      .then(people => {
+      //  persons.map(Person.format)
+        response.json(people.map(Person.format))
+      }) /*  */
     })
 
   app.get('/api/persons/:id', (req, response) => {
@@ -50,17 +51,8 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
     }
   })
 
-  const randomId = () => {
-    const id = Math.floor(Math.random() * Math.floor(100))
-    return id
-  }
-
   app.post('/api/persons', (request, response) => {
     const body = request.body
-
-    //body.name = "Peku Poku"
-    //body.name = "Lea Kutvonen"
-    //body.number = "11-2234"
 
       if (body.name === undefined || body.number === undefined) {
         return response.status(400).json({error: 'nimi tai numero puuttuu'})
@@ -76,7 +68,10 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
       .then(savedPerson => {
         response.json(savedPerson)
       })
-
+      .catch(error => {
+      console.log(error)
+      //
+    })
   })
 
   app.delete('/api/persons/:id', (request, response) => {
