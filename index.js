@@ -77,12 +77,7 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
 
   app.put('/api/persons/:id', (request, response) => {
     const body = request.body
-    //body.number = 222-4444
-    //const id = '_5b139999282c3c189850ed50'
-    const id = Number(request.params.id)
-    console.log(request.params.id)
-    console.log(body.name)
-    console.log(body.number)
+    
     Person
       .findByIdAndUpdate(request.params.id, { number: body.number}, {new: true})
       .then(updatedPerson => {
