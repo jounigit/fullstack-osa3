@@ -19,16 +19,20 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
     res.send('<h1>Hello World!</h1>')
   })
 
-  app.get('/info', (req, res) => {
+  app.get('/info', (request, response) => {
     const d = new Date()
     const n = d.toString()
-    const ulos = '<p>puhelinluettelossa ' + persons.length + ' henkilön tiedot</p><p>' + n + '</p>'
+    //let nb = Person.count
+    Person.count({ }, function (err, count) {
+      if (err) console.log(err)
+      console.log(count)
+      let c = JSON.stringify(count)
+      const txt = '<p>puhelinluettelossa ' + c + ' henkilön tiedot</p><p> ' + n + '</p>'
 
-    if ( ulos ) {
-    res.send(ulos)
-    } else {
-      response.status(404).end()
-    }
+      response.send(txt)
+      })
+
+
   })
 
   app.get('/api/persons', (request, response) => {
@@ -40,16 +44,14 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
       }) /*  */
     })
 
-  app.get('/api/persons/:id', (req, response) => {
-    const id = Number(req.params.id)
-    const person = persons.find(person => person.id === id)
-
-    if ( person ) {
-      response.json(person)
-    } else {
-      response.status(404).end()
-    }
-  })
+    app.get('/api/persons/:id', (request, response) => {
+      Person
+        .findById(request.params.id)
+        .then(person => {
+           console.log('index.js: ' + person)
+          response.json(Person.format(person))
+        })
+    })
 
   app.post('/api/persons', (request, response) => {
     const body = request.body
@@ -77,7 +79,7 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
 
   app.put('/api/persons/:id', (request, response) => {
     const body = request.body
-    
+
     Person
       .findByIdAndUpdate(request.params.id, { number: body.number}, {new: true})
       .then(updatedPerson => {

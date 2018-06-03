@@ -19,9 +19,7 @@ personSchema.statics.format = function(person) {
   }
 }
 
-personSchema.statics.findByName = function(name) {
-    return this.find({ name: name })
-  }
+
 
 const Person = mongoose.model('Person', personSchema)
 
