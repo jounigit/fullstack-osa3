@@ -54,24 +54,44 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
   app.post('/api/persons', (request, response) => {
     const body = request.body
 
-      if (body.name === undefined || body.number === undefined) {
-        return response.status(400).json({error: 'nimi tai numero puuttuu'})
-      }
+    if (body.name === undefined || body.number === undefined) {
+      return response.status(400).json({error: 'nimi tai numero puuttuu'})
+    }/**/
 
+    console.log('Uusi nimi')
     const person = new Person({
-      name: body.name,
-      number: body.number
-    })
+        name: body.name,
+        number: body.number
+      })
 
-    person
-      .save()
-      .then(savedPerson => {
-        response.json(savedPerson)
+      person
+        .save()
+        .then(savedPerson => {
+          response.json(savedPerson)
+        })
+        .catch(error => {
+        console.log(error)
+        response.status(400).send({ error: 'tallennus epäonnistui' })
+      })
+  })
+
+  app.put('/api/persons/:id', (request, response) => {
+    const body = request.body
+    //body.number = 222-4444
+    //const id = '_5b139999282c3c189850ed50'
+    const id = Number(request.params.id)
+    console.log(request.params.id)
+    console.log(body.name)
+    console.log(body.number)
+    Person
+      .findByIdAndUpdate(request.params.id, { number: body.number}, {new: true})
+      .then(updatedPerson => {
+        response.json(Person.format(updatedPerson))
       })
       .catch(error => {
-      console.log(error)
-      //
-    })
+        console.log(error)
+        response.status(400).send({ error: 'päivitys epäonnistui' })
+      })/* */
   })
 
   app.delete('/api/persons/:id', (request, response) => {
