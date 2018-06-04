@@ -19,40 +19,39 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
     res.send('<h1>Hello World!</h1>')
   })
 
+// Get info
   app.get('/info', (request, response) => {
     const d = new Date()
     const n = d.toString()
     //let nb = Person.count
     Person.count({ }, function (err, count) {
       if (err) console.log(err)
-      console.log(count)
       let c = JSON.stringify(count)
       const txt = '<p>puhelinluettelossa ' + c + ' henkilön tiedot</p><p> ' + n + '</p>'
 
       response.send(txt)
       })
-
-
   })
 
+// Get all persons
   app.get('/api/persons', (request, response) => {
     Person
       .find({})
       .then(people => {
-      //  persons.map(Person.format)
         response.json(people.map(Person.format))
       }) /*  */
     })
 
+// Get person by id
     app.get('/api/persons/:id', (request, response) => {
       Person
         .findById(request.params.id)
         .then(person => {
-           console.log('index.js: ' + person)
           response.json(Person.format(person))
         })
     })
 
+// Add new person
   app.post('/api/persons', (request, response) => {
     const body = request.body
 
@@ -60,11 +59,6 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
       return response.status(400).json({error: 'nimi tai numero puuttuu'})
     }/**/
 
-    Person.findOne({ name: body.name }, 'name', function (err, person) {
-        //console.log("Err: ", err)
-
-        if (person === null) {
-          console.log('Uusi nimi')
           const person = new Person({
               name: body.name,
               number: body.number
@@ -76,14 +70,12 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
                 response.json(savedPerson)
               })
               .catch(error => {
-              response.status(400).send({ error: 'tallennus epäonnistui' })
+                response.status(400).json(error.message)
             })
-        } else {
-          response.status(400).send({ error: 'nimi on jo olemassa' })
-        }
-    })
+
   })
 
+// Update person
   app.put('/api/persons/:id', (request, response) => {
     const body = request.body
 
@@ -98,6 +90,7 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
       })/* */
   })
 
+// delete person
   app.delete('/api/persons/:id', (request, response) => {
     Person
       .findByIdAndRemove(request.params.id)
