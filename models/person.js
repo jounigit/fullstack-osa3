@@ -1,8 +1,11 @@
 const mongoose = require('mongoose')
 const uniqueValidator = require('mongoose-unique-validator')
 
-const url = 'mongodb://fullstack:fullstackja@ds119090.mlab.com:19090/persons-ja'
-// const url = 'mongodb://<user>:<pass>@ds119090.mlab.com:19090/persons-ja'
+if ( process.env.NODE_ENV !== 'production' ) {
+  require('dotenv').config()
+}
+
+const url = process.env.MONGODB_URI
 
 mongoose.connect(url)
 
