@@ -6,6 +6,8 @@
   "scripts": {
     "start": "node api/index.js",
     "watch": "nodemon api/index.js",
+    "lint": "eslint .",
+    
     "test": "\"echo \\\"Error: no test specified\\\" && exit 1\""
   },
   "author": "Jouni Airaksinen",
