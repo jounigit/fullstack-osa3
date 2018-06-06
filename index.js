@@ -59,6 +59,11 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
       return response.status(400).json({error: 'nimi tai numero puuttuu'})
     }/**/
 
+      Person.findOne({ name: body.name }, 'name', function (err, person) {
+        //console.log("Err: ", err)
+
+        if (person === null) {
+          console.log('Uusi nimi')
           const person = new Person({
               name: body.name,
               number: body.number
@@ -70,8 +75,12 @@ app.use(morgan(':method :url :body :status :res[content-length] - :response-time
                 response.json(savedPerson)
               })
               .catch(error => {
-                response.status(400).json(error.message)
+              response.status(400).send({ error: 'tallennus epäonnistui' })
             })
+        } else {
+          response.status(400).send({ error: 'nimi on jo olemassa' })
+        }
+    })
 
   })
 
