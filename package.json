@@ -20,6 +20,7 @@
     "package.json": "^2.0.1"
   },
   "devDependencies": {
+    "eslint": "^4.19.1",
     "nodemon": "^1.17.3"
   }
 }
